@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Record Form</title>
+    <style>
+        :root {
+            --blizzard-blue: #8ECAE6;
+            --blue-green: #219EBC;
+            --prussian-blue: #023047;
+            --selective-yellow: #FFB703;
+            --orange: #FB8500;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--prussian-blue);
+            color: var(--prussian-blue);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-grow: 1;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .navbar ul li {
+            margin-left: 25px;
+        }
+
+        .navbar ul li a {
+            color: var(--prussian-blue);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: var(--selective-yellow);
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+        }
+
+        .navbar .logo img {
+            height: 40px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .navbar .logo h3 {
+            color: var(--prussian-blue);
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        main {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2em;
+        }
+
+        .profile-icon {
+            border-radius: 50%;
+            border: 3px solid var(--prussian-blue);
+        }
+
+        h2 {
+            color: var(--prussian-blue);
+            margin-top: 1em;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1.5em;
+            margin-bottom: 1.5em;
+            background-color: #fafafa;
+        }
+
+        legend {
+            font-weight: bold;
+            color: var(--prussian-blue);
+            padding: 0 0.5em;
+        }
+
+        .form-group {
+            margin-bottom: 1.25em;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group p {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-weight: 500;
+        }
+
+        label input[type="radio"],
+        label input[type="checkbox"] {
+            margin-right: 0.5em;
+            vertical-align: middle;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .form-buttons {
+            text-align: center;
+            margin-top: 1em;
+        }
+
+        input[type="submit"],
+        input[type="reset"],
+        .return-button {
+            background-color: var(--prussian-blue);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover,
+        input[type="reset"]:hover,
+        .return-button:hover {
+            background-color: white;
+            color: var(--prussian-blue);
+            border: 2px solid var(--prussian-blue);
+        }
+
+        .logo-placer {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .logo-placer img {
+            max-width: 250px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://static.wikia.nocookie.net/adventuretimewithfinnandjake/images/8/81/BMO.png/revision/latest?cb=20200613123757"
+                alt="BMO Logo">
+            <h3>B.M.O.: Budget & Money Organizer</h3>
+        </div>
+        <ul>
+            <li><a href="expense-history.html">Expense History</a></li>
+            <li><a href="educational-page.html">Educational Page</a></li>
+            <li><a href="index.html" id="logoutBtn">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header>
+            <div class="logo-placer">
+                <img src="https://static.wikia.nocookie.net/adventuretimewithfinnandjake/images/8/81/BMO.png/revision/latest?cb=20200613123757"
+                    alt="BMO Logo">
+            </div>
+            <h2>Expense Record Form</h2>
+            <p id="loggedInUser" style="color: var(--prussian-blue); font-weight: bold; font-size: 20px;"></p>
+        </header>
+        <form id="expenseForm" name="surveyForm">
+            <fieldset>
+                <legend>Expense Information</legend>
+                <div class="form-group">
+                    <label for="expenseType">Expense Type</label>
+                    <select id="expenseType" name="expenseType" required>
+                        <option value="">--Please choose Expense Type--</option>
+                        <option value="Needs">Needs</option>
+                        <option value="Wants">Wants</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expenseCategory">Expense Category</label>
+                    <select id="expenseCategory" name="expenseCategory" required>
+                        <option value="">--Please choose Expense Category--</option>
+                        <option value="House & Utilities">House & Utilities</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Food & Groceries">Food & Groceries</option>
+                        <option value="Health & Insurance">Health & Insurance</option>
+                        <option value="Clothing & Personal Care">Clothing & Personal Care</option>
+                        <option value="Entertainment & Leisure">Entertainment & Leisure</option>
+                        <option value="Education & Learning">Education & Learning</option>
+                        <option value="Savings & Investments">Savings & Investments</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expenseName">Expense Name:</label>
+                    <input type="text" id="expenseName" name="expenseName" required
+                        placeholder="Enter the name of the expense">
+                </div>
+                <div class="form-group">
+                    <label for="expenseAmount">Expense Amount:</label>
+                    <input type="number" id="expenseAmount" name="expenseAmount" required
+                        placeholder="Enter the amount of the expense">
+                </div>
+                <div class="form-group">
+                    <label for="datePurchased">Date Purchased:</label>
+                    <input type="date" id="datePurchased" name="datePurchased" required>
+                </div>
+                <div class="form-group">
+                    <p>Type of Expense Payment</p>
+                    <label><input type="radio" name="paymentType" value="Credit Card" checked> Credit Card</label>
+                    <label><input type="radio" name="paymentType" value="Debit Card"> Debit Card</label>
+                    <label><input type="radio" name="paymentType" value="GCash"> GCash</label>
+                    <label><input type="radio" name="paymentType" value="Bank Transfer"> Bank Transfer</label>
+                </div>
+                <div class="form-group">
+                    <p>Reminders</p>
+                    <label><input type="checkbox" name="reminders" value="Don't forget to save up"> "Don't forget to
+                        save up"</label>
+                    <label><input type="checkbox" name="reminders" value="Limit your spending"> "Limit your
+                        spending"</label>
+                    <label><input type="checkbox" name="reminders" value="Avoid over spending and impulsive buying">
+                        "Avoid over spending and impulsive buying"</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Additional Comments</legend>
+                <div class="form-group">
+                    <label for="comments">Comments:</label>
+                    <textarea id="comments" name="comments" rows="5"
+                        placeholder="Tell us how we can improve..."></textarea>
+                </div>
+            </fieldset>
+            <div class="form-buttons">
+                <input type="reset" value="Reset Form">
+                <input type="submit" value="Submit Expense">
+            </div>
+        </form>
+    </main>
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyRGr8m0PmcOS3k3V3rKT7Mc8nH-ieoL8ajPKniUEzMFraDvdD7qGZEpbo4htQ3vpI/exec';
+        const expenseForm = document.getElementById('expenseForm');
+        const loggedInUserDisplay = document.getElementById('loggedInUser');
+        const logoutButton = document.getElementById('logoutBtn');
+
+        //getting and storing ng username na ininput na user sa login/signup page.
+        const activeUser = localStorage.getItem('activeUser');
+        // if walang value yung activeUser meaning walang nakalog in, therefore mag reredirect sha sa login/signup page.
+        if (!activeUser) {
+            alert('You are not logged in. Please log in to record expenses.');
+            window.location.href = 'index.html';
+        } else {
+            //if meron mag didisplay to na narerecord ng expense for the current user
+            loggedInUserDisplay.textContent = `Recording expenses for: ${activeUser}`;
+        }
+
+        // same idea lang din ng sa login na pag cinlick yung submit button
+        expenseForm.addEventListener('submit', async e => {
+            e.preventDefault();
+
+            //same idea as well sa login na iniistore yung value given sa second paramenter, sa column ng nakalagay sa first parameter
+            const formData = new FormData();
+
+            formData.append('action', 'submitExpense');
+            formData.append('username', activeUser);
+
+            formData.append('expenseType', document.getElementById('expenseType').value);
+            formData.append('expenseCategory', document.getElementById('expenseCategory').value);
+            formData.append('expenseName', document.getElementById('expenseName').value);
+            formData.append('expenseAmount', document.getElementById('expenseAmount').value);
+            formData.append('datePurchased', document.getElementById('datePurchased').value);
+            formData.append('paymentType', expenseForm.querySelector('input[name="paymentType"]:checked')?.value || '');
+
+            //pang kuha ng checkboxes input
+            const reminders = Array.from(expenseForm.querySelectorAll('input[name="reminders"]:checked'))
+                .map(cb => cb.value)
+                .join(', ') || 'N/A';
+            formData.append('reminders', reminders);
+
+            const comments = document.getElementById('comments').value.trim() || 'No comments';
+            formData.append('comments', comments);
+
+            //same idea as well na ipapasa na yung mga data sa google sheet ko through POST and fetch api 
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                //same idea lang din sa before
+                if (data.success) {
+                    alert('Expense submitted successfully!');
+                    expenseForm.reset();
+                } else {
+                    alert('Error submitting expense: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during expense submission. Please try again.');
+            }
+        });
+
+        logoutButton.addEventListener('click', e => {
+            e.preventDefault();
+            localStorage.removeItem('activeUser');
+            alert('You have been logged out.');
+            window.location.href = 'index.html';
+        });
+    </script>
+
+</body>
+
+</html>

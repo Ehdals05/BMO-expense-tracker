@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense History - B.M.O.</title>
+    <style>
+        :root {
+            --blizzard-blue: #8ECAE6;
+            --blue-green: #219EBC;
+            --prussian-blue: #023047;
+            --selective-yellow: #FFB703;
+            --orange: #FB8500;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--prussian-blue);
+            color: var(--prussian-blue);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-grow: 1;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .navbar ul li {
+            margin-left: 25px;
+        }
+
+        .navbar ul li a {
+            color: var(--prussian-blue);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: var(--selective-yellow);
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+        }
+
+        .navbar .logo img {
+            height: 40px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .navbar .logo h3 {
+            color: var(--prussian-blue);
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        main {
+            max-width: 1500px;
+            margin: 0 auto;
+            background: white;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2em;
+        }
+
+        h2 {
+            color: var(--prussian-blue);
+            margin-top: 0.5em;
+            font-size: 30px;
+        }
+
+        #expenseTableContainer {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        #expenseTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        #expenseTable th,
+        #expenseTable td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        #expenseTable th {
+            background-color: var(--prussian-blue);
+            color: white;
+            font-weight: bold;
+        }
+
+        #expenseTable tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #expenseTable tbody tr:hover {
+            background-color: var(--blizzard-blue);
+        }
+
+        .no-expenses {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: var(--selective-yellow);
+        }
+
+        .loading-message {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: var(--prussian-blue);
+        }
+
+        .logo-placer {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .logo-placer img {
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="https://static.wikia.nocookie.net/adventuretimewithfinnandjake/images/8/81/BMO.png/revision/latest?cb=20200613123757"
+                alt="BMO Logo">
+            <h3>B.M.O.: Budget & Money Organizer</h3>
+        </div>
+        <ul>
+            <li><a href="mainPage.html">Record Expense</a></li>
+            <li><a href="educational-page.html">Educational Page</a></li>
+            <li><a href="index.html" id="logoutBtn">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header>
+            <div class="logo-placer">
+                <img src="https://static.wikia.nocookie.net/adventuretimewithfinnandjake/images/8/81/BMO.png/revision/latest?cb=20200613123757"
+                    alt="BMO Logo">
+            </div>
+            <h2>Expense History</h2>
+            <p id="loggedInUser" style="color: var(--prussian-blue); font-weight: bold; font-size: 20px;"></p>
+        </header>
+
+        <div id="expenseTableContainer">
+            <p class="loading-message" id="loadingMessage">Loading your expense history...</p>
+            <table id="expenseTable" style="display: none;">
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <p class="no-expenses" id="noExpensesMessage" style="display: none; color: red;">No expenses recorded yet.
+            </p>
+        </div>
+    </main>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyRGr8m0PmcOS3k3V3rKT7Mc8nH-ieoL8ajPKniUEzMFraDvdD7qGZEpbo4htQ3vpI/exec';
+        const loggedInUserDisplay = document.getElementById('loggedInUser');
+        const logoutButton = document.getElementById('logoutBtn');
+        const expenseTable = document.getElementById('expenseTable');
+        const expenseTableHead = expenseTable.querySelector('thead tr');
+        const expenseTableBody = expenseTable.querySelector('tbody');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const noExpensesMessage = document.getElementById('noExpensesMessage');
+
+        const activeUser = localStorage.getItem('activeUser');
+
+        if (!activeUser) {
+            alert('You are not logged in. Please log in to view your expense history.');
+            window.location.href = 'index.html';
+            window.stop();
+        } else {
+            loggedInUserDisplay.textContent = `Expense History For User: ${activeUser}`;
+            getUserExpenses(activeUser);
+        }
+
+        // function na cinacall if may active user
+        async function getUserExpenses(username) {
+            try {
+                //GET request sa app script may function kasi sa appscript na if equals sa getExpenses so irurun nya yung getExpenseForuser kasi eto ung return non, then username kasi parameter to ng getExpensesForUser
+                //encodeURIComponent() ensures the username is safely included in the URL (in case it contains spaces or special characters).
+                const response = await fetch(`${scriptURL}?action=getExpenses&username=${encodeURIComponent(username)}`);
+                const data = await response.json();
+
+
+                loadingMessage.style.display = 'none';
+
+                //checks if success yung pag get and if may na-get atleast one expense
+                if (data.success && data.expenses.length > 0) {
+                    displayExpenses(data.expenses);
+                    expenseTable.style.display = 'table';
+                } else {
+                    noExpensesMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error fetching expenses:', error);
+                loadingMessage.textContent = 'Error loading expenses. Please try again.';
+                loadingMessage.style.color = 'red';
+            }
+        }
+
+        //This function accepts an array of expense objects (each row from the sheet) and displays them in an HTML table.
+        function displayExpenses(expenses) {
+            //Empties the <thead> and <tbody> of the expense table to ensure old data is removed before showing new data.
+            expenseTableHead.innerHTML = '';
+            expenseTableBody.innerHTML = '';
+
+            if (expenses.length === 0) {
+                noExpensesMessage.style.display = 'block';
+                expenseTable.style.display = 'none';
+                return;
+            }
+
+            //Gets the keys (column headers) from the first expense object (assuming all objects have the same structure).
+            //Filters out "Username" to avoid showing that column (since it’s redundant per-user).
+            const headersToShow = Object.keys(expenses[0]).filter(header => header !== 'Username');
+            //Create a <th> (table header). Set its text. Append it to the table’s <thead>
+            headersToShow.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                expenseTableHead.appendChild(th);
+            });
+            //the idea of this is that for each row, display each data
+            expenses.forEach(expense => {
+                const tr = document.createElement('tr');
+                headersToShow.forEach(headerKey => {
+                    const td = document.createElement('td');
+                    td.textContent = expense[headerKey];
+                    tr.appendChild(td);
+                });
+                expenseTableBody.appendChild(tr);
+            });
+        }
+
+        logoutButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('activeUser');
+            alert('You have been logged out.');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+
+</html>
