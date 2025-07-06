@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B.M.O.: Budget & Money Organizer</title>
+    <style>
+        :root {
+            --blizzard-blue: #8ECAE6;
+            --blue-green: #219EBC;
+            --prussian-blue: #023047;
+            --selective-yellow: #FFB703;
+            --orange: #FB8500;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: var(--prussian-blue);
+            color: white;
+        }
+
+        .logo-placer {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .logo-placer img {
+            max-width: 250px;
+            height: auto;
+        }
+
+
+        h1 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        p.tagline {
+            color: var(--blizzard-blue);
+            font-size: 1.2em;
+            margin-top: 0;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .btn-open-modal {
+            background-color: var(--blue-green);
+            font-weight: bold;
+            color: white;
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-open-modal:hover {
+            background-color: var(--selective-yellow);
+            transform: translateY(-2px);
+        }
+
+        input[type=text],
+        input[type=password],
+        input[type=email] {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid var(--blue-green);
+            box-sizing: border-box;
+            border-radius: 5px;
+            background-color: #fefefe;
+            color: var(--prussian-blue);
+        }
+
+        input[type=text]:focus,
+        input[type=password]:focus,
+        input[type=email]:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 5px rgba(251, 133, 0, 0.7);
+        }
+
+        .modal-form-btn {
+            background-color: var(--prussian-blue);
+            color: white;
+            font-weight: bold;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-form-btn:hover {
+            background-color: var(--selective-yellow);
+            opacity: 0.9;
+        }
+
+        .cancelbtn {
+            width: auto;
+            padding: 10px 18px;
+            background-color: #d32f2f;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cancelbtn:hover {
+            background-color: #b71c1c;
+        }
+
+        .imgcontainer {
+            text-align: center;
+            margin: 24px 0 12px 0;
+            position: relative;
+        }
+
+        img.avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--prussian-blue);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        span.psw,
+        span.signup-link {
+            float: right;
+            padding-top: 16px;
+            color: var(--prussian-blue);
+        }
+
+        span.signup-link a,
+        span.psw a {
+            color: var(--blue-green);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        span.signup-link a:hover,
+        span.psw a:hover {
+            color: var(--orange);
+            text-decoration: underline;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(2, 48, 71, 0.85);
+            padding-top: 60px;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            margin: 5% auto 15% auto;
+            border: 1px solid var(--blue-green);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            color: var(--prussian-blue);
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            color: var(--prussian-blue);
+            font-size: 38px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--orange);
+            cursor: pointer;
+        }
+
+        .animate {
+            -webkit-animation: animatezoom 0.6s;
+            animation: animatezoom 0.6s
+        }
+
+        @-webkit-keyframes animatezoom {
+            from {
+                -webkit-transform: scale(0)
+            }
+
+            to {
+                -webkit-transform: scale(1)
+            }
+        }
+
+        @keyframes animatezoom {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+
+            span.psw,
+            span.signup-link {
+                float: none;
+                display: block;
+                text-align: left;
+                padding-top: 5px;
+            }
+
+            .cancelbtn {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="logo-placer">
+        <img src="https://static.wikia.nocookie.net/adventuretimewithfinnandjake/images/8/81/BMO.png/revision/latest?cb=20200613123757"
+            alt="BMO Logo">
+    </div>
+
+    <h1>B.M.O.: Budget & Money Organizer</h1>
+    <p class="tagline">YOUR PERSONAL EXPENSE TRACKER WEB APPLICATION</p>
+
+    <button onclick="document.getElementById('loginModal').style.display='block'" class="btn-open-modal">Login</button>
+    <button onclick="document.getElementById('signupModal').style.display='block'" class="btn-open-modal">Sign
+        Up</button>
+
+
+    <div id="loginModal" class="modal">
+        <form class="modal-content animate" id="loginForm">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('loginModal').style.display='none'" class="close"
+                    title="Close Modal">&times;</span>
+                <img src="https://wallpapers.com/images/high/adventure-time-pictures-7jqch2d40yybril7.webp" alt="Avatar"
+                    class="avatar">
+            </div>
+
+            <div class="container">
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" id="loginUname" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" id="loginPsw" required>
+
+                <button type="submit" class="modal-form-btn">Login</button>
+                <label style="color: var(--prussian-blue);">
+                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                </label>
+            </div>
+
+            <div class="container"
+                style="background-color:var(--blizzard-blue); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                <button type="button" onclick="document.getElementById('loginModal').style.display='none'"
+                    class="cancelbtn">Cancel</button>
+                <span class="signup-link">Don't have an account? <a href="#" onclick="openSignupFromLogin()"
+                        style="color: var(--prussian-blue);">Sign Up</a></span>
+            </div>
+        </form>
+    </div>
+
+    <div id="signupModal" class="modal">
+        <form class="modal-content animate" id="signupForm">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('signupModal').style.display='none'" class="close"
+                    title="Close Modal">&times;</span>
+                <img src="https://static1.colliderimages.com/wordpress/wp-content/uploads/2023/04/adventure-time-bmo.jpg"
+                    alt="Avatar" class="avatar">
+            </div>
+
+            <div class="container">
+                <label for="uname_signup"><b>Username</b></label>
+                <input type="text" placeholder="Choose a Username" name="uname_signup" id="signupUname" required>
+
+                <label for="psw_signup"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw_signup" id="signupPsw" required>
+
+                <label for="psw_repeat"><b>Repeat Password</b></label>
+                <input type="password" placeholder="Repeat Password" name="psw_repeat" id="signupRepeatPsw" required>
+
+                <button type="submit" class="modal-form-btn">Sign Up</button>
+            </div>
+
+            <div class="container"
+                style="background-color:var(--blizzard-blue); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                <button type="button" onclick="document.getElementById('signupModal').style.display='none'"
+                    class="cancelbtn">Cancel</button>
+                <span class="psw">Already have an account? <a href="#" onclick="openLoginFromSignup()"
+                        style="color: var(--prussian-blue);">Login</a></span>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxChQMUoXEpl6_q_WzknAAZ4XQx0LATJ40vaJ2y1D_fhnh1ceJKe_-V2lz40K4_jcRCDA/exec'; // *** IMPORTANT: Replace with your Apps Script Web App URL ***
+
+        var loginModal = document.getElementById('loginModal');
+        var signupModal = document.getElementById('signupModal');
+        var loginForm = document.getElementById('loginForm');
+        var signupForm = document.getElementById('signupForm');
+
+        function openSignupFromLogin() {
+            loginModal.style.display = 'none';
+            signupModal.style.display = 'block';
+        }
+
+        function openLoginFromSignup() {
+            signupModal.style.display = 'none';
+            loginModal.style.display = 'block';
+        }
+
+        window.onclick = function (event) {
+            if (event.target == loginModal) {
+                loginModal.style.display = "none";
+            }
+            if (event.target == signupModal) {
+                signupModal.style.display = "none";
+            }
+        }
+
+        // this is for the login form, para mag handle ng login request para kung pindutin ng user yung submit 'di magrereload'
+        loginForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            //kinukuha yung mga values na ininput ng user
+            const username = document.getElementById('loginUname').value;
+            const password = document.getElementById('loginPsw').value;
+
+            // formData - built-in browser object para sa submitting ng mga form inputs
+            const formData = new FormData();
+            // etong action-login para sa may pickup na login request ang gusto gawin
+            formData.append('action', 'login');
+            // eto naman inaadd yung mga data sa backend
+            formData.append('username', username);
+            formData.append('password', password);
+
+            try {
+
+                //eto fetch api based on the video references eto ay nagsesend ng HTTP POST sa app script url na nilagay.
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+                // conversion ng response to JSON or javascript object
+                const data = await response.json();
+
+                //if success and login eto mangyayari 
+                if (data.success) {
+                    alert('Login successful! Welcome, ' + username + '!');
+                    //iniistore natin sha para pede magamit sa other pages
+                    localStorage.setItem('activeUser', username);
+                    //redirect sa login modal
+                    window.location.href = 'mainPage.html';
+                } else {
+                    alert('Login failed: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during login. Please try again.');
+            }
+        });
+
+        //repeat lang sa signup same logic langs
+
+        signupForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const signupUsername = document.getElementById('signupUname').value;
+            const signupPassword = document.getElementById('signupPsw').value;
+            const signupRepeatPassword = document.getElementById('signupRepeatPsw').value;
+
+            if (signupPassword !== signupRepeatPassword) {
+                alert('Passwords do not match. Please try again.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('action', 'signup');
+            formData.append('username', signupUsername);
+            formData.append('password', signupPassword);
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Sign up successful for ' + signupUsername + '! You can now log in.');
+                    signupModal.style.display = 'none';
+                    loginModal.style.display = 'block';
+                } else {
+                    alert('Sign up failed: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during sign up. Please try again.');
+            }
+        });
+    </script>
+
+</body>
+
+</html>
